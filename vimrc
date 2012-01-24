@@ -1,6 +1,14 @@
 " <Leader> key
 let mapleader = ","
 
+""""""""""""""""""""
+" .vimrc stuff
+" Source the vimrc file after saving it
+if has("autocmd")
+  autocmd bufwritepost .vimrc source $MYVIMRC
+endif
+nmap <leader>vrc :tabedit $MYVIMRC<CR>
+
 set nocompatible
 
 set rnu
@@ -21,7 +29,6 @@ set shiftwidth=2
 set softtabstop=2
 set expandtab
 set list listchars=tab:\ \ ,trail:·
-set virtualedit=onemore
 
 " Searching
 set hlsearch
@@ -121,8 +128,6 @@ let g:gist_open_browser_after_post = 1
 set modeline
 set modelines=10
 
-" Default color scheme
-color desert
 
 " Directories for swp files
 set backupdir=~/.vim/backup
@@ -229,8 +234,10 @@ set gdefault
 
 nnoremap <CR> :noh<CR>
 
+" Default color scheme
+set t_Co=256
 set background=dark
-colorscheme solarized
+colorscheme jellybeans
 
 " tabs
 map  <leader>0 0gt
@@ -267,3 +274,6 @@ silent! nnoremap <unique> <silent> <Leader>b :CtrlPMRU<CR>
 let g:ctrlp_regexp_search = 0
 let g:ctrlp_match_window_reversed = 0
 let g:ctrlp_max_height = 50
+
+" Powerline config
+let g:Powerline_symbols = 'fancy'

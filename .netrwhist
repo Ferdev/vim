@@ -1,9 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
-let g:netrw_dirhist_1='/Users/fer/.rvm/gems/ruby-1.9.2-p290@irekia/gems/i18n_routing-0.5.0'
-let g:netrw_dirhist_2='/Users/fer/.rvm/gems/ruby-1.9.2-p290@irekia/gems/i18n_routing-0.5.0/lib'
-let g:netrw_dirhist_3='/Users/fer/.rvm/gems/ruby-1.9.2-p290@irekia/gems/i18n_routing-0.5.0'
-let g:netrw_dirhist_4='/Users/fer/.rvm/gems/ruby-1.9.2-p290@irekia/gems/i18n_routing-0.5.0/lib'
-let g:netrw_dirhist_5='/Users/fer/.rvm/gems/ruby-1.9.2-p290@irekia/gems/i18n_routing-0.5.0'
-let g:netrw_dirhist_6='/Users/fer/.rvm/gems/ruby-1.9.2-p290@irekia/gems/i18n_routing-0.5.0/spec'
-let g:netrw_dirhist_7='/Users/fer/.rvm/gems/ruby-1.9.2-p290@irekia/gems/i18n_routing-0.5.0/spec/i18n_routing'
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/Users/fer/.rvm/gems/ruby-1.9.2-p290@irekia/gems/devise-1.4.7/app/views/devise'
+let g:netrw_dirhist_2='/Users/fer/.rvm/gems/ruby-1.9.2-p290@irekia/gems/devise-1.4.7/app/views/devise/mailer'
+let g:netrw_dirhist_3='/Users/fer/.rvm/gems/ruby-1.9.2-p290@irekia/gems/devise-1.4.7'
+let g:netrw_dirhist_4='/Users/fer/.rvm/gems/ruby-1.9.2-p290@irekia/gems/devise-1.4.7/app'
+let g:netrw_dirhist_5='/Users/fer/.rvm/gems/ruby-1.9.2-p290@irekia/gems/devise-1.4.7/app/helpers'
+let g:netrw_dirhist_6='/Users/fer/.rvm/gems/ruby-1.9.2-p290@irekia/gems/devise-1.4.7'
