@@ -1,11 +1,13 @@
 " <Leader> key
 let mapleader = ","
 
+autocmd BufEnter * :syntax sync fromstart
+
 """"""""""""""""""""
 " .vimrc stuff
 " Source the vimrc file after saving it
 if has("autocmd")
-  autocmd bufwritepost .vimrc source $MYVIMRC
+""autocmd bufwritepost .vimrc source $MYVIMRC
 endif
 nmap <leader>vrc :tabedit $MYVIMRC<CR>
 
@@ -48,13 +50,6 @@ set laststatus=2
 " This is likely a bludgeon to solve some other issue, but it works
 set noequalalways
 
-" NERDTree configuration
-" let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
-" map <Leader>n :NERDTreeToggle<CR>
-
-" Command-T configuration
-" let g:CommandTMaxHeight=20
-
 " ZoomWin configuration
 map <Leader><Leader> :ZoomWin<CR>
 
@@ -65,19 +60,19 @@ map <C-\> :tnext<CR>
 
 " Remember last location in file
 if has("autocmd")
-  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
-    \| exe "normal g'\"" | endif
+""au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+  ""\| exe "normal g'\"" | endif
 endif
 
 function s:setupWrapping()
-  set wrap
-  set wrapmargin=2
-  set textwidth=72
+""set wrap
+""set wrapmargin=2
+""set textwidth=72
 endfunction
 
 function s:setupMarkup()
-  call s:setupWrapping()
-  map <buffer> <Leader>p :Hammer<CR>
+""call s:setupWrapping()
+""map <buffer> <Leader>p :Hammer<CR>
 endfunction
 
 " Thorfile, Rakefile, Vagrantfile and Gemfile are Ruby
@@ -89,7 +84,7 @@ au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn} call s:setupMarkup()
 " add json syntax highlighting
 au BufNewFile,BufRead *.json set ft=javascript
 
-au BufRead,BufNewFile *.txt call s:setupWrapping()
+"au BufRead,BufNewFile *.txt call s:setupWrapping()
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
@@ -235,31 +230,22 @@ set gdefault
 nnoremap <CR> :noh<CR>
 
 " Default color scheme
-set t_Co=256
-set background=dark
-colorscheme jellybeans
+"set t_Co=256
+"set background=dark
+set term=screen-256color
+colorscheme molokai
 
 " tabs
 map  <leader>0 0gt
-imap <leader>0 <Esc>0gt
 map  <leader>1 1gt
-imap <leader>1 <Esc>1gt
 map  <leader>2 2gt
-imap <leader>2 <Esc>2gt
 map  <leader>3 3gt
-imap <leader>3 <Esc>3gt
 map  <leader>4 4gt
-imap <leader>4 <Esc>4gt
 map  <leader>5 5gt
-imap <leader>5 <Esc>5gt
 map  <leader>6 6gt
-imap <leader>6 <Esc>6gt
 map  <leader>7 7gt
-imap <leader>7 <Esc>7gt
 map  <leader>8 8gt
-imap <leader>8 <Esc>8gt
 map  <leader>9 9gt
-imap <leader>9 <Esc>9gt
 
 " set cursorline
 " highlight CursorLine guifg=white guibg=darkblue ctermfg=white ctermbg=darkblue
