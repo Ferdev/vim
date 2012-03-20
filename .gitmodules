@@ -1,9 +1,6 @@
 [submodule "SearchFold"]
   path = bundle/SearchFold
   url = git://github.com/vim-scripts/SearchFold.git
-[submodule "ZoomWin"]
-  path = bundle/ZoomWin
-  url = git://github.com/vim-scripts/ZoomWin.git
 [submodule "ack.vim"]
   path = bundle/ack.vim
   url = git://github.com/mileszs/ack.vim.git
@@ -16,24 +13,12 @@
 [submodule "nerdcommenter"]
   path = bundle/nerdcommenter
   url = git://github.com/scrooloose/nerdcommenter.git
-[submodule "notes.vim"]
-  path = bundle/notes.vim
-  url = git://github.com/vim-scripts/notes.vim.git
-[submodule "snipmate.vim"]
-  path = bundle/snipmate.vim
-  url = git://github.com/msanders/snipmate.vim.git
 [submodule "syntastic"]
   path = bundle/syntastic
   url = git://github.com/scrooloose/syntastic.git
 [submodule "tabular"]
   path = bundle/tabular
   url = git://github.com/godlygeek/tabular.git
-[submodule "vim-autoclose"]
-  path = bundle/vim-autoclose
-  url = git://github.com/Townk/vim-autoclose.git
-[submodule "vim-cecutil"]
-  path = bundle/vim-cecutil
-  url = git://github.com/clones/vim-cecutil.git
 [submodule "vim-colors-solarized"]
   path = bundle/vim-colors-solarized
   url = git://github.com/altercation/vim-colors-solarized.git
@@ -52,9 +37,6 @@
 [submodule "vim-markdown"]
   path = bundle/vim-markdown
   url = git://github.com/tpope/vim-markdown.git
-[submodule "vim-ragtag"]
-  path = bundle/vim-ragtag
-  url = git://github.com/tpope/vim-ragtag.git
 [submodule "vim-rails"]
   path = bundle/vim-rails
   url = git://github.com/tpope/vim-rails.git
@@ -97,3 +79,33 @@
 [submodule "vim-vividchalk"]
 	path = bundle/vim-vividchalk
 	url = git://github.com/tpope/vim-vividchalk.git
+[submodule "bundle/vim-coffee-script"]
+	path = bundle/vim-coffee-script
+	url = https://github.com/kchmck/vim-coffee-script.git
+[submodule "bundle/vimroom"]
+	path = bundle/vimroom
+	url = https://github.com/mikewest/vimroom.git
+[submodule "bundle/vim-ios"]
+	path = bundle/vim-ios
+	url = https://github.com/eraserhd/vim-ios.git
+[submodule "bundle/nerdtree"]
+	path = bundle/nerdtree
+	url = https://github.com/scrooloose/nerdtree.git
+[submodule "bundle/ZoomWin"]
+	path = bundle/ZoomWin
+	url = git://github.com/vim-scripts/ZoomWin.git
+[submodule "bundle/notes.vim"]
+	path = bundle/notes.vim
+	url = git://github.com/vim-scripts/notes.vim.git
+[submodule "bundle/snipmate.vim"]
+	path = bundle/snipmate.vim
+	url = git://github.com/msanders/snipmate.vim.git
+[submodule "bundle/vim-autoclose"]
+	path = bundle/vim-autoclose
+	url = git://github.com/Townk/vim-autoclose.git
+[submodule "bundle/vim-cecutil"]
+	path = bundle/vim-cecutil
+	url = git://github.com/clones/vim-cecutil.git
+[submodule "bundle/vim-ragtag"]
+	path = bundle/vim-ragtag
+	url = git://github.com/tpope/vim-ragtag.git

@@ -1,8 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
-let g:netrw_dirhist_1='/Users/fer/.rvm/gems/ruby-1.9.3-p0-perf@ikeameter/gems/rack-contrib-1.1.0/lib/rack'
-let g:netrw_dirhist_2='/Users/fer/.rvm/gems/ruby-1.9.3-p0-perf@ikeameter/gems/rack-contrib-1.1.0/lib/rack/contrib'
-let g:netrw_dirhist_3='/Users/fer/.rvm/gems/ruby-1.9.3-p0-perf@ikeameter/gems/rack-contrib-1.1.0'
-let g:netrw_dirhist_4='/Users/fer/.rvm/gems/ruby-1.9.2-p290@irekia/gems/devise-1.4.7'
-let g:netrw_dirhist_5='/Users/fer/.cache'
-let g:netrw_dirhist_6='/Users/fer/.vim/bundle/notes.vim/misc/notes/user'
