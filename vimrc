@@ -1,7 +1,28 @@
 " <Leader> key
 let mapleader = ","
 
+" Buffers events
+"""""""""""""""""
 autocmd BufEnter * :syntax sync fromstart
+
+" Thorfile, Rakefile, Vagrantfile and Gemfile are Ruby
+au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru}    set ft=ruby
+
+" md, markdown, and mk are markdown and define buffer-local preview
+au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn} call s:setupMarkup()
+
+" add json syntax highlighting
+au BufNewFile,BufRead *.json set ft=javascript
+
+" add jst syntax highlighting
+au BufNewFile,BufRead *.ejs set filetype=html
+
+"au BufRead,BufNewFile *.txt call s:setupWrapping()
+
+"au BufWritePost *.coffee silent CoffeeMake! | cwindow | redraw!
+
+" Removes trailing spaces in every line
+autocmd BufWritePre * :%s/\s\+$//e
 
 """"""""""""""""""""
 " .vimrc stuff
@@ -57,12 +78,13 @@ map <Leader><Leader> :ZoomWin<CR>
 map <Leader>rt :!ctags --extra=+f -R *<CR><CR>
 map <Leader>tt :TlistToggle<CR>
 map <C-\> :tnext<CR>
+let tlist_objc_settings    = 'objc;i:interface;c:class;m:method;p:property'
 
 " Remember last location in file
-if has("autocmd")
+"if has("autocmd")
 ""au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
   ""\| exe "normal g'\"" | endif
-endif
+"endif
 
 function s:setupWrapping()
 ""set wrap
@@ -74,17 +96,6 @@ function s:setupMarkup()
 ""call s:setupWrapping()
 ""map <buffer> <Leader>p :Hammer<CR>
 endfunction
-
-" Thorfile, Rakefile, Vagrantfile and Gemfile are Ruby
-au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru}    set ft=ruby
-
-" md, markdown, and mk are markdown and define buffer-local preview
-au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn} call s:setupMarkup()
-
-" add json syntax highlighting
-au BufNewFile,BufRead *.json set ft=javascript
-
-"au BufRead,BufNewFile *.txt call s:setupWrapping()
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
@@ -124,10 +135,6 @@ set modeline
 set modelines=10
 
 
-" Directories for swp files
-set backupdir=~/.vim/backup
-set directory=~/.vim/backup
-
 " Turn off jslint errors by default
 let g:JSLintHighlightErrorLine = 0
 
@@ -147,21 +154,18 @@ runtime! macros/matchit.vim
 
 autocmd VimEnter * wincmd l
 
-" Removes trailing spaces in every line
-autocmd BufWritePre * :%s/\s\+$//e
-
 set wrap
 set relativenumber
 set hidden
 set ttyfast
 set timeout timeoutlen=300 ttimeoutlen=300
-set wildignore+=*.jpg,*.jpeg,*.jpeg*,*.png,*.gif,*/public/uploads/*,*/.git/*,*/.bundle/*,*/bin/*,*/log/*,*/tmp/*,*/.sass-cache/*
+set wildignore+=*.jpg,*.jpeg,*.jpeg*,*.png,*.gif,*/public/uploads/*,*/.git/*,*/.bundle/*,*/bin/*,*/log/*,*/tmp/*,*/.sass-cache/*,*/.jhw-cache/*,*/node_modules/*
 
 " fix regexes default regex handling by auto-inserting \v before every
 " REGEX.
 " Now regexs are Ruby compatible
-nnoremap / /\v
-vnoremap / /\v
+"nnoremap / /\v
+"vnoremap / /\v
 
 " Map ESC to jj and save my pinky
 imap jk <ESC>
@@ -212,6 +216,7 @@ nmap <leader><Esc> :q!<CR>
 
 " Splits  ,v to open a new vertical split and switch to it
 nnoremap <leader>v <C-w>v<C-w>l
+nnoremap <leader>h <C-w>s<C-w>l
 " Move between splits
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
@@ -263,3 +268,9 @@ let g:ctrlp_max_height = 50
 
 " Powerline config
 let g:Powerline_symbols = 'fancy'
+
+" Formats json files
+map <leader>jf  <Esc>:%!python -m json.tool<CR>
+
+" VimRoom
+nnoremap <silent> <Leader>vr :VimroomToggle<CR>
