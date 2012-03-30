@@ -58,9 +58,6 @@
 [submodule "bundle/vim-turbux"]
 	path = bundle/vim-turbux
 	url = https://github.com/jgdavey/vim-turbux.git
-[submodule "bundle/YankRing"]
-	path = bundle/YankRing
-	url = https://github.com/vim-scripts/YankRing.vim.git
 [submodule "bundle/vim-replace"]
 	path = bundle/vim-replace
 	url = https://github.com/fesplugas/vim-replace.git

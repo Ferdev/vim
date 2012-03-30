@@ -276,7 +276,7 @@ silent! nnoremap <unique> <silent> <Leader>t :CtrlP<CR>
 silent! nnoremap <unique> <silent> <Leader>b :CtrlPMRU<CR>
 let g:ctrlp_regexp_search = 0
 let g:ctrlp_match_window_reversed = 0
-let g:ctrlp_max_height = 8
+let g:ctrlp_max_height = 50
 
 " Powerline config
 let g:Powerline_symbols = 'fancy'
