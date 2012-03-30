@@ -45,6 +45,9 @@ set encoding=utf-8
 " Copy/pastes to/from system clipboard
 set clipboard=unnamed
 
+" Records editing action into a file
+set undofile
+
 " Whitespace stuff
 set nowrap
 set tabstop=2
@@ -169,6 +172,8 @@ set wildignore+=*.jpg,*.jpeg,*.jpeg*,*.png,*.gif,*/public/uploads/*,*/.git/*,*/.
 
 " Map ESC to jj and save my pinky
 imap jk <ESC>
+imap Jk <ESC>
+imap JK <ESC>
 
 " Switch between buffers
 noremap <tab> <C-w><C-w>
@@ -222,6 +227,8 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+set splitright
+set splitbelow
 
 " Plugin options
 
@@ -236,9 +243,14 @@ nnoremap <CR> :noh<CR>
 
 " Default color scheme
 "set t_Co=256
-"set background=dark
+set background=dark
 set term=screen-256color
 colorscheme molokai
+
+" Solarized light background
+"let g:solarized_termcolors=256
+"set background=light
+"colorscheme solarized
 
 " tabs
 map  <leader>0 0gt
@@ -264,7 +276,7 @@ silent! nnoremap <unique> <silent> <Leader>t :CtrlP<CR>
 silent! nnoremap <unique> <silent> <Leader>b :CtrlPMRU<CR>
 let g:ctrlp_regexp_search = 0
 let g:ctrlp_match_window_reversed = 0
-let g:ctrlp_max_height = 50
+let g:ctrlp_max_height = 8
 
 " Powerline config
 let g:Powerline_symbols = 'fancy'
