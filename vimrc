@@ -45,8 +45,21 @@ set encoding=utf-8
 " Copy/pastes to/from system clipboard
 set clipboard=unnamed
 
-" Records editing action into a file
-set undofile
+" viminfo stores the the state of your previous editing session
+set viminfo+=n~/.vim/viminfo
+
+if exists("+undofile")
+  " undofile - This allows you to use undos after exiting and restarting
+  " This, like swap and backups, uses .vim-undo first, then ~/.vim/undo
+  " :help undo-persistence
+  " This is only present in 7.3+
+  if isdirectory($HOME . '/.vim/undo') == 0
+    :silent !mkdir -p ~/.vim/undo > /dev/null 2>&1
+  endif
+  set undodir=./.vim-undo//
+  set undodir+=~/.vim/undo//
+  set undofile
+endif
 
 " Whitespace stuff
 set nowrap
@@ -265,15 +278,15 @@ map  <leader>8 8gt
 map  <leader>9 9gt
 
 " set cursorline
-" highlight CursorLine guifg=white guibg=darkblue ctermfg=white ctermbg=darkblue
-" autocmd InsertEnter * highlight CursorLine guifg=white guibg=blue ctermfg=white ctermbg=blue
-" autocmd InsertLeave * highlight CursorLine guifg=white guibg=darkblue ctermfg=white ctermbg=darkblue
-autocmd InsertEnter * setlocal cursorline
-autocmd InsertLeave * setlocal nocursorline
+" highlight cursorline guifg=white guibg=darkblue ctermfg=white ctermbg=darkblue
+" autocmd insertenter * highlight cursorline guifg=white guibg=blue ctermfg=white ctermbg=blue
+" autocmd insertleave * highlight cursorline guifg=white guibg=darkblue ctermfg=white ctermbg=darkblue
+autocmd insertenter * setlocal cursorline
+autocmd insertleave * setlocal nocursorline
 
-" Ctrl-P config
-silent! nnoremap <unique> <silent> <Leader>t :CtrlP<CR>
-silent! nnoremap <unique> <silent> <Leader>b :CtrlPMRU<CR>
+" ctrl-p config
+silent! nnoremap <unique> <silent> <leader>t :ctrlp<cr>
+silent! nnoremap <unique> <silent> <leader>b :ctrlpmru<cr>
 let g:ctrlp_regexp_search = 0
 let g:ctrlp_match_window_reversed = 0
 let g:ctrlp_max_height = 50
@@ -286,3 +299,6 @@ map <leader>jf  <Esc>:%!python -m json.tool<CR>
 
 " VimRoom
 nnoremap <silent> <Leader>vr :VimroomToggle<CR>
+
+" Folds all foldings but the current you are in
+noremap <leader>z zMzvzz
