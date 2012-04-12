@@ -60,6 +60,8 @@ if exists("+undofile")
   set undodir+=~/.vim/undo//
   set undofile
 endif
+noremap <leader>u :GundoToggle<CR>
+
 
 " Whitespace stuff
 set nowrap
@@ -81,6 +83,8 @@ set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*
 
 " Status bar
 set laststatus=2
+set modelines=5
+set scrolloff=5
 
 " Without setting this, ZoomWin restores windows in a way that causes
 " equalalways behavior to be triggered the next time CommandT is used.
