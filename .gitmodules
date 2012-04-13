@@ -106,6 +106,3 @@
 [submodule "bundle/vimux"]
 	path = bundle/vimux
 	url = https://github.com/benmills/vimux.git
-[submodule "bundle/ruby_focused_unit_test_vim"]
-	path = bundle/ruby_focused_unit_test_vim
-	url = https://github.com/drewolson/ruby_focused_unit_test_vim.git
