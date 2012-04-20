@@ -21,8 +21,8 @@ au BufNewFile,BufRead *.ejs set filetype=html
 
 "au BufWritePost *.coffee silent CoffeeMake! | cwindow | redraw!
 
-" Removes trailing spaces in every line
-autocmd BufWritePre * :%s/\s\+$//e
+" Removes trailing spaces in every line, conserving cursor position
+autocmd BufWritePre * kz|:%s/\s\+$//e|'z
 
 """"""""""""""""""""
 " .vimrc stuff
