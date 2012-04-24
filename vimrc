@@ -1,53 +1,113 @@
-" <Leader> key
-let mapleader = ","
+" Changes leader key
+let mapleader                      = ","
+let tlist_objc_settings            = 'objc;i:interface;c:class;m:method;p:property'
 
-" Buffers events
-"""""""""""""""""
-autocmd BufEnter * :syntax sync fromstart
+" Turn off jslint errors by default
+let g:JSLintHighlightErrorLine = 0
 
-" Thorfile, Rakefile, Vagrantfile and Gemfile are Ruby
-au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru}    set ft=ruby
-
-" md, markdown, and mk are markdown and define buffer-local preview
-au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn} call s:setupMarkup()
-
-" add json syntax highlighting
-au BufNewFile,BufRead *.json set ft=javascript
-
-" add jst syntax highlighting
-au BufNewFile,BufRead *.ejs set filetype=html
-
-"au BufRead,BufNewFile *.txt call s:setupWrapping()
-
-"au BufWritePost *.coffee silent CoffeeMake! | cwindow | redraw!
-
-" Removes trailing spaces in every line, conserving cursor position
-autocmd BufWritePre * kz|:%s/\s\+$//e|'z
-
-""""""""""""""""""""
-" .vimrc stuff
-" Source the vimrc file after saving it
-if has("autocmd")
-""autocmd bufwritepost .vimrc source $MYVIMRC
-endif
-nmap <leader>vrc :tabedit $MYVIMRC<CR>
-
-set nocompatible
-
-set rnu
-set ruler
 syntax on
 call pathogen#infect()
 
-" Set encoding
-set encoding=utf-8
+" Buffers events
+"""""""""""""""""
+au VimEnter * wincmd l
+au BufEnter * :syntax sync fromstart
+au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru} set ft=ruby
+au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn} call s:setupMarkup()
+au BufNewFile,BufRead *.json set filetype=javascript
+au BufNewFile,BufRead *.ejs  set filetype=html
+au BufNewFile,BufRead *.tpl  set filetype=html.erb
+au BufNewFile,BufRead *.vimrc  set filetype=vim
+au BufRead,BufNewFile *.txt call s:setupWrapping()
+au BufWritePre * kz|:%s/\s\+$//e|'z " Removes trailing spaces in every line
+au insertenter * setlocal cursorline   " Highlights on cursor line in insert mode
+au insertleave * setlocal nocursorline " Highlights off cursor line in normal mode
 
-" Copy/pastes to/from system clipboard
-set clipboard=unnamed
+"au BufWritePost *.coffee silent CoffeeMake! | cwindow | redraw!
 
-" viminfo stores the the state of your previous editing session
-set viminfo+=n~/.vim/viminfo
+" Reloads vimrc file after saving it
+augroup AutoReloadVimRC
+  au!
+  au BufWritePost $MYVIMRC so $MYVIMRC
+augroup END
 
+""""""""""""""""""""""""""""""""""""""""""""
+" Settings                                 "
+""""""""""""""""""""""""""""""""""""""""""""
+set nocompatible                           " Old-vim Rest In Peace
+set rnu                                    " Activates relative line numbers
+set ruler                                  " Activates ruler
+set encoding=utf-8                         " Set encoding
+set clipboard=unnamed                      " Copy/pastes to/from system clipboard
+set viminfo+=n~/.vim/viminfo               " viminfo stores the the state of your previous editing session
+""""""""""""""""""""""""""""""""""""""""""""
+set nowrap                                 " Whitespace stuff
+set tabstop=2                              " Whitespace stuff
+set shiftwidth=2                           " Whitespace stuff
+set softtabstop=2                          " Whitespace stuff
+set expandtab                              " Whitespace stuff
+set list listchars=tab:\ \ ,trail:·        " Whitespace stuff
+""""""""""""""""""""""""""""""""""""""""""""
+set hlsearch                               " Search stuff
+set incsearch                              " Search stuff
+set ignorecase                             " Search stuff
+set smartcase                              " Search stuff
+""""""""""""""""""""""""""""""""""""""""""""
+set wildmode=list:longest,list:full        " Tab completion
+""""""""""""""""""""""""""""""""""""""""""""
+set laststatus=2                           " Status bar
+set modelines=5                            " Status bar
+""""""""""""""""""""""""""""""""""""""""""""
+set backspace=indent,eol,start             " allow backspacing over everything in insert mode
+""""""""""""""""""""""""""""""""""""""""""""
+set background=dark                        " Default color scheme
+set term=screen-256color                   " Default color scheme
+colorscheme molokai                        " Default color scheme
+""""""""""""""""""""""""""""""""""""""""""""
+" let g:solarized_termcolors=256           " Solarized light background
+" set background=light                     " Solarized light background
+" colorscheme solarized                    " Solarized light background
+""""""""""""""""""""""""""""""""""""""""""""
+set modeline                               " Activates modeline support
+set modelines=10                           " Checks 10 first or last lines in a file for vim settings overrides
+""""""""""""""""""""""""""""""""""""""""""""
+set wrap                                   " Sets lines wrap
+set hidden                                 " Buffers are just hidden when closing files
+set ttyfast                                " Fasth terminal connection
+set timeout timeoutlen=300 ttimeoutlen=300 " Timeout for keystrokes
+set wildignore+=*.o                        " Ignored files paths                                                "
+set wildignore+=*.obj                      " Ignored files paths
+set wildignore+=.git                       " Ignored files paths
+set wildignore+=*.rbc                      " Ignored files paths
+set wildignore+=*.class                    " Ignored files paths
+set wildignore+=.svn                       " Ignored files paths
+set wildignore+=vendor/gems/*              " Ignored files paths
+set wildignore+=*.jpg                      " Ignored files paths
+set wildignore+=*.jpeg                     " Ignored files paths
+set wildignore+=*.jpeg*                    " Ignored files paths
+set wildignore+=*.png                      " Ignored files paths
+set wildignore+=*.gif                      " Ignored files paths
+set wildignore+=*/public/uploads/*         " Ignored files paths
+set wildignore+=*/.git/*                   " Ignored files paths
+set wildignore+=*/.bundle/*                " Ignored files paths
+set wildignore+=*/bin/*                    " Ignored files paths
+set wildignore+=*/log/*                    " Ignored files paths
+set wildignore+=*/tmp/*                    " Ignored files paths
+set wildignore+=*/.sass-cache/*            " Ignored files paths
+set wildignore+=*/.jhw-cache/*             " Ignored files paths
+set wildignore+=*/node_modules/*           " Ignored files paths
+""""""""""""""""""""""""""""""""""""""""""""
+set nobackup                               " get rid of annoying backup behaviour
+set nowritebackup                          " get rid of annoying backup behaviour
+set noswapfile                             " get rid of annoying backup behaviour
+""""""""""""""""""""""""""""""""""""""""""""
+set splitright                             " Vertical splits at right side
+set splitbelow                             " Horizontal splits below
+""""""""""""""""""""""""""""""""""""""""""""
+set gdefault                               " don't need /g after :s or :g
+""""""""""""""""""""""""""""""""""""""""""""
+
+" undo stuff
 if exists("+undofile")
   " undofile - This allows you to use undos after exiting and restarting
   " This, like swap and backups, uses .vim-undo first, then ~/.vim/undo
@@ -56,135 +116,50 @@ if exists("+undofile")
   if isdirectory($HOME . '/.vim/undo') == 0
     :silent !mkdir -p ~/.vim/undo > /dev/null 2>&1
   endif
+
   set undodir=./.vim-undo//
   set undodir+=~/.vim/undo//
   set undofile
+
 endif
-noremap <leader>u :GundoToggle<CR>
 
+" Remember last location in file
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+  \| exe "normal g'\"" | endif
+endif
 
-" Whitespace stuff
-set nowrap
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
-set expandtab
-set list listchars=tab:\ \ ,trail:·
+function! s:setupWrapping()
+  set wrap
+  set wrapmargin=2
+  set textwidth=72
+endfunction
 
-" Searching
-set hlsearch
-set incsearch
-set ignorecase
-set smartcase
+function! s:setupMarkup()
+  call s:setupWrapping()
+  map <buffer> <Leader>p :Hammer<CR>
+endfunction
 
-" Tab completion
-set wildmode=list:longest,list:full
-set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*
+" load the plugin and indent settings for the detected filetype
+filetype plugin indent on
 
-" Status bar
-set laststatus=2
-set modelines=5
+" % to bounce from do to end etc.
+runtime! macros/matchit.vim
 
-" Without setting this, ZoomWin restores windows in a way that causes
-" equalalways behavior to be triggered the next time CommandT is used.
-" This is likely a bludgeon to solve some other issue, but it works
-set noequalalways
-
+""""""""""""""""""""""""""""""""
+"           Mappings           "
+""""""""""""""""""""""""""""""""
 " ZoomWin configuration
 map <Leader><Leader> :ZoomWin<CR>
 
 " CTags
 map <Leader>rt :!ctags --extra=+f -R *<CR><CR>
-map <Leader>tt :TlistToggle<CR>
-map <C-\> :tnext<CR>
-let tlist_objc_settings    = 'objc;i:interface;c:class;m:method;p:property'
+map <Leader>tt :TlistToggle<CR> " CTags
 
-" Remember last location in file
-"if has("autocmd")
-""au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
-  ""\| exe "normal g'\"" | endif
-"endif
-
-function s:setupWrapping()
-""set wrap
-""set wrapmargin=2
-""set textwidth=72
-endfunction
-
-function s:setupMarkup()
-""call s:setupWrapping()
-""map <buffer> <Leader>p :Hammer<CR>
-endfunction
-
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
-
-" load the plugin and indent settings for the detected filetype
-filetype plugin indent on
-
-" Opens an edit command with the path of the currently edited file filled in
-" Normal mode: <Leader>e
+" To create new files
 map <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 map <Leader>n :tabnew<CR>
-
-" Opens a tab edit command with the path of the currently edited file filled in
-" Normal mode: <Leader>t
 map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
-
-" Inserts the path of the currently edited file into a command
-" Command mode: Ctrl+P
-cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
-
-" Unimpaired configuration
-" Bubble single lines
-nmap <C-Up> [e
-nmap <C-Down> ]e
-" Bubble multiple lines
-vmap <C-Up> [egv
-vmap <C-Down> ]egv
-
-" Enable syntastic syntax checking
-let g:syntastic_enable_signs=1
-let g:syntastic_quiet_warnings=1
-let g:gist_detect_filetype = 1
-let g:gist_open_browser_after_post = 1
-
-" Use modeline overrides
-set modeline
-set modelines=10
-
-
-" Turn off jslint errors by default
-let g:JSLintHighlightErrorLine = 0
-
-" % to bounce from do to end etc.
-runtime! macros/matchit.vim
-
-" Show (partial) command in the status line
-" set showcmd
-
-" Include user's local vim config
-" if filereadable(expand("~/.vimrc.local"))
-"   source ~/.vimrc.local
-" endif
-
-" Make Nerd Tree smaller
-" let NERDTreeWinSize=30
-
-autocmd VimEnter * wincmd l
-
-set wrap
-set relativenumber
-set hidden
-set ttyfast
-set timeout timeoutlen=300 ttimeoutlen=300
-set wildignore+=*.jpg,*.jpeg,*.jpeg*,*.png,*.gif,*/public/uploads/*,*/.git/*,*/.bundle/*,*/bin/*,*/log/*,*/tmp/*,*/.sass-cache/*,*/.jhw-cache/*,*/node_modules/*
-
-" fix regexes default regex handling by auto-inserting \v before every
-" REGEX.
-" Now regexs are Ruby compatible
-"nnoremap / /\v
-"vnoremap / /\v
 
 " Map ESC to jj and save my pinky
 imap jk <ESC>
@@ -192,42 +167,38 @@ imap Jk <ESC>
 imap JK <ESC>
 
 " Switch between buffers
-noremap <tab> <C-w><C-w>
+nmap <tab> <C-w><C-w>
+
 " :bd deletes the current buffer (all windows of)
 nmap <leader>d :bd<CR>
 
-" get rid of annoying backup behaviour
-set nobackup
-set nowritebackup
-set noswapfile
-
 " ,a to Ack
-nnoremap <leader>a :Ack
+nn <leader>a :Ack
 
 " Rotating among results in an ack search
 map <C-n> :cn<CR>
 map <C-p> :cp<CR>
 
-
 " ease of use keyboard mappings (why do I care about top/bottom of screen?)
 map H ^
 map L $
+
 " remap space bar to search
 :nmap <Space> /
 
 " Disable the regular keys to get me on the right track
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-nnoremap <left> <nop>
-nnoremap <right> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
-inoremap <right> <nop>
+nn <up> <nop>
+nn <down> <nop>
+nn <left> <nop>
+nn <right> <nop>
+ino <up> <nop>
+ino <down> <nop>
+ino <left> <nop>
+ino <right> <nop>
 
 " Better default behaviour with left and right
-nnoremap j gj
-nnoremap k gk
+nn j gj
+nn k gk
 
 " easier quitting
 " save and close all
@@ -236,39 +207,19 @@ nmap <leader>w :w!<CR>
 nmap <leader><Esc> :q!<CR>
 
 " Splits  ,v to open a new vertical split and switch to it
-nnoremap <leader>v <C-w>v<C-w>l
-nnoremap <leader>h <C-w>s<C-w>l
+nn <leader>v <C-w>v<C-w>l
+nn <leader>h <C-w>s<C-w>l
+
 " Move between splits
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-set splitright
-set splitbelow
+nn <C-h> <C-w>h
+nn <C-j> <C-w>j
+nn <C-k> <C-w>k
+nn <C-l> <C-w>l
 
-" Plugin options
+" Removes highlighted search terms
+nn <CR> :noh<CR>
 
-" autoclose plugin
-let g:AutoClosePairs = {'(': ')', '{': '}', '[': ']', '"': '"', "'": "'", '#{': '}', '|':'|' }
-let g:AutoCloseProtectedRegions = ["Character"]
-
-" don't need /g after :s or :g
-set gdefault
-
-nnoremap <CR> :noh<CR>
-
-" Default color scheme
-"set t_Co=256
-set background=dark
-set term=screen-256color
-colorscheme molokai
-
-" Solarized light background
-"let g:solarized_termcolors=256
-"set background=light
-"colorscheme solarized
-
-" tabs
+" Numbers to move between tabs
 map  <leader>0 0gt
 map  <leader>1 1gt
 map  <leader>2 2gt
@@ -280,39 +231,40 @@ map  <leader>7 7gt
 map  <leader>8 8gt
 map  <leader>9 9gt
 
-" set cursorline
-" highlight cursorline guifg=white guibg=darkblue ctermfg=white ctermbg=darkblue
-" autocmd insertenter * highlight cursorline guifg=white guibg=blue ctermfg=white ctermbg=blue
-" autocmd insertleave * highlight cursorline guifg=white guibg=darkblue ctermfg=white ctermbg=darkblue
-autocmd insertenter * setlocal cursorline
-autocmd insertleave * setlocal nocursorline
-
-" ctrl-p config
-silent! nnoremap <unique> <silent> <leader>t :ctrlp<cr>
-silent! nnoremap <unique> <silent> <leader>b :ctrlpmru<cr>
-let g:ctrlp_regexp_search = 0
-let g:ctrlp_match_window_reversed = 0
-let g:ctrlp_max_height = 50
-
-" Powerline config
-let g:Powerline_symbols = 'fancy'
-
 " Formats json files
 map <leader>jf  <Esc>:%!python -m json.tool<CR>
 
-" VimRoom
-nnoremap <silent> <Leader>vr :VimroomToggle<CR>
+" Activates VimRoom-mode
+nn <silent> <Leader>vr :VimroomToggle<CR>
 
 " Folds all foldings but the current you are in
-noremap <leader>z zMzvzz
+no <leader>z zMzvzz
 
 " Ruby test Vimux config
 map <Leader>tf :RunRubyFocusedTest<CR>
-
 map <Leader>tc :RunRubyFocusedTest<CR>
-
 map <Leader>ta :RunAllRubyTests<CR>
-
 map <Leader>tl :RunLastVimTimuxCommand<CR>
-
 map <Leader>rx :CloseVimTmuxPanes<CR>
+
+" Opens vimrc file in a new tab
+nmap <leader>vrc :tabedit $MYVIMRC<CR>
+
+" Gundo toggle
+nmap <leader>u :GundoToggle<CR>
+
+" Alignment commands
+map <leader>\" :Tabularize /"<CR>
+map <leader>= :Tabularize /=<CR>
+map <leader>{ :Tabularize /{<CR>
+map <leader>} :Tabularize /}<CR>
+
+""""""""""""""""""""""""""""""
+"       Plugins config       "
+"                            "
+""""""""""""""""""""""""""""""
+so ~/.vim/config/ctrlp.vimrc
+so ~/.vim/config/vim-powerline.vimrc
+so ~/.vim/config/vim-autoclose.vimrc
+so ~/.vim/config/syntastic.vimrc
+
