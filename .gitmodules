@@ -52,9 +52,6 @@
 [submodule "zencoding-vim"]
   path = bundle/zencoding-vim
   url = git://github.com/mattn/zencoding-vim.git
-[submodule "bundle/vim-replace"]
-	path = bundle/vim-replace
-	url = https://github.com/fesplugas/vim-replace.git
 [submodule "jellybeans.vim"]
 	path = bundle/jellybeans.vim
 	url = git://github.com/nanotech/jellybeans.vim.git

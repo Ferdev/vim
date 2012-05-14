@@ -13,13 +13,13 @@ call pathogen#infect()
 au VimEnter * wincmd l
 au BufEnter * :syntax sync fromstart
 au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru} set ft=ruby
-au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn} call s:setupMarkup()
 au BufNewFile,BufRead *.json set filetype=javascript
 au BufNewFile,BufRead *.ejs  set filetype=html
 au BufNewFile,BufRead *.tpl  set filetype=html.erb
 au BufNewFile,BufRead *.vimrc  set filetype=vim
-au BufRead,BufNewFile *.txt call s:setupWrapping()
-au BufWritePre * kz|:%s/\s\+$//e|'z " Removes trailing spaces in every line
+au BufWritePre * :call <SID>StripTrailingWhitespaces()
+au BufWinLeave * silent! mkview
+au BufWinEnter * silent! loadview
 au insertenter * setlocal cursorline   " Highlights on cursor line in insert mode
 au insertleave * setlocal nocursorline " Highlights off cursor line in normal mode
 
@@ -60,13 +60,10 @@ set modelines=5                            " Status bar
 """"""""""""""""""""""""""""""""""""""""""""
 set backspace=indent,eol,start             " allow backspacing over everything in insert mode
 """"""""""""""""""""""""""""""""""""""""""""
-set background=dark                        " Default color scheme
+let g:solarized_termcolors=256             " Default color scheme
 set term=screen-256color                   " Default color scheme
-colorscheme molokai                        " Default color scheme
-""""""""""""""""""""""""""""""""""""""""""""
-" let g:solarized_termcolors=256           " Solarized light background
-" set background=light                     " Solarized light background
-" colorscheme solarized                    " Solarized light background
+set background=dark                        " Default color scheme
+colorscheme solarized                      " Default color scheme
 """"""""""""""""""""""""""""""""""""""""""""
 set modeline                               " Activates modeline support
 set modelines=10                           " Checks 10 first or last lines in a file for vim settings overrides
@@ -74,8 +71,8 @@ set modelines=10                           " Checks 10 first or last lines in a 
 set wrap                                   " Sets lines wrap
 set hidden                                 " Buffers are just hidden when closing files
 set ttyfast                                " Fasth terminal connection
-set timeout timeoutlen=300 ttimeoutlen=300 " Timeout for keystrokes
-set wildignore+=*.o                        " Ignored files paths                                                "
+set timeout timeoutlen=500 ttimeoutlen=500 " Timeout for keystrokes
+set wildignore+=*.o                        " Ignored files paths
 set wildignore+=*.obj                      " Ignored files paths
 set wildignore+=.git                       " Ignored files paths
 set wildignore+=*.rbc                      " Ignored files paths
@@ -129,15 +126,20 @@ if has("autocmd")
   \| exe "normal g'\"" | endif
 endif
 
+""""""""""""""""""""""""""""""""
+"           Functions          "
+""""""""""""""""""""""""""""""""
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+
 function! s:setupWrapping()
   set wrap
   set wrapmargin=2
   set textwidth=72
-endfunction
-
-function! s:setupMarkup()
-  call s:setupWrapping()
-  map <buffer> <Leader>p :Hammer<CR>
 endfunction
 
 " load the plugin and indent settings for the detected filetype
@@ -150,16 +152,16 @@ runtime! macros/matchit.vim
 "           Mappings           "
 """"""""""""""""""""""""""""""""
 " ZoomWin configuration
-map <Leader><Leader> :ZoomWin<CR>
+map <leader><leader> :ZoomWin<CR>
 
 " CTags
-map <Leader>rt :!ctags --extra=+f -R *<CR><CR>
-map <Leader>tt :TlistToggle<CR> " CTags
+map <leader>rt :!ctags --extra=+f -R *<CR><CR>
+map <leader>tt :TlistToggle<CR> " CTags
 
 " To create new files
-map <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
-map <Leader>n :tabnew<CR>
-map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>n :tabnew<CR>
+map <leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
 
 " Map ESC to jj and save my pinky
 imap jk <ESC>
@@ -235,17 +237,17 @@ map  <leader>9 9gt
 map <leader>jf  <Esc>:%!python -m json.tool<CR>
 
 " Activates VimRoom-mode
-nn <silent> <Leader>vr :VimroomToggle<CR>
+nn <silent> <leader>vr :VimroomToggle<CR>
 
 " Folds all foldings but the current you are in
 no <leader>z zMzvzz
 
 " Ruby test Vimux config
-map <Leader>tf :RunRubyFocusedTest<CR>
-map <Leader>tc :RunRubyFocusedTest<CR>
-map <Leader>ta :RunAllRubyTests<CR>
-map <Leader>tl :RunLastVimTimuxCommand<CR>
-map <Leader>rx :CloseVimTmuxPanes<CR>
+map <leader>tf :RunRubyFocusedTest<CR>
+map <leader>tc :RunRubyFocusedContext<CR>
+map <leader>ta :RunAllRubyTests<CR>
+map <leader>tl :RunLastVimTmuxCommand<CR>
+map <leader>rx :CloseVimTmuxPanes<CR>
 
 " Opens vimrc file in a new tab
 nmap <leader>vrc :tabedit $MYVIMRC<CR>
@@ -254,10 +256,14 @@ nmap <leader>vrc :tabedit $MYVIMRC<CR>
 nmap <leader>u :GundoToggle<CR>
 
 " Alignment commands
-map <leader>\" :Tabularize /"<CR>
-map <leader>= :Tabularize /=<CR>
-map <leader>{ :Tabularize /{<CR>
-map <leader>} :Tabularize /}<CR>
+nmap <leader>\" :Tabularize /"<CR>
+nmap <leader>= :Tabularize /=<CR>
+nmap <leader>{ :Tabularize /{<CR>
+nmap <leader>} :Tabularize /}<CR>
+nmap <leader>; :Tabularize /;<CR>
+nmap <leader>\: :Tabularize /\:<CR>
+
+" Format commands
 
 """"""""""""""""""""""""""""""
 "       Plugins config       "
