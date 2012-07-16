@@ -17,7 +17,7 @@ au BufNewFile,BufRead *.json set filetype=javascript
 au BufNewFile,BufRead *.ejs  set filetype=html
 au BufNewFile,BufRead *.tpl  set filetype=html.erb
 au BufNewFile,BufRead *.vimrc  set filetype=vim
-au BufWritePre * :call <SID>StripTrailingWhitespaces()
+au BufWritePre * :call StripTrailingWhitespaces()
 au BufWinLeave * silent! mkview
 au BufWinEnter * silent! loadview
 au insertenter * setlocal cursorline   " Highlights on cursor line in insert mode
@@ -60,8 +60,8 @@ set modelines=5                            " Status bar
 """"""""""""""""""""""""""""""""""""""""""""
 set backspace=indent,eol,start             " allow backspacing over everything in insert mode
 """"""""""""""""""""""""""""""""""""""""""""
-let g:solarized_termcolors=256             " Default color scheme
-set term=screen-256color                   " Default color scheme
+"let g:solarized_termcolors=256             " Default color scheme
+"set term=screen-256color                   " Default color scheme
 set background=dark                        " Default color scheme
 colorscheme solarized                      " Default color scheme
 """"""""""""""""""""""""""""""""""""""""""""
@@ -103,6 +103,8 @@ set splitbelow                             " Horizontal splits below
 """"""""""""""""""""""""""""""""""""""""""""
 set gdefault                               " don't need /g after :s or :g
 """"""""""""""""""""""""""""""""""""""""""""
+set completeopt=longest,menuone            " Improves autocomplete menu
+""""""""""""""""""""""""""""""""""""""""""""
 
 " undo stuff
 if exists("+undofile")
@@ -129,7 +131,7 @@ endif
 """"""""""""""""""""""""""""""""
 "           Functions          "
 """"""""""""""""""""""""""""""""
-fun! <SID>StripTrailingWhitespaces()
+fun! StripTrailingWhitespaces()
     let l = line(".")
     let c = col(".")
     %s/\s\+$//e
@@ -156,7 +158,7 @@ map <leader><leader> :ZoomWin<CR>
 
 " CTags
 map <leader>rt :!ctags --extra=+f -R *<CR><CR>
-map <leader>tt :TlistToggle<CR> " CTags
+map <leader>tt :TlistToggle<CR>
 
 " To create new files
 map <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
@@ -256,14 +258,37 @@ nmap <leader>vrc :tabedit $MYVIMRC<CR>
 nmap <leader>u :GundoToggle<CR>
 
 " Alignment commands
-nmap <leader>\" :Tabularize /"<CR>
-nmap <leader>= :Tabularize /=<CR>
-nmap <leader>{ :Tabularize /{<CR>
-nmap <leader>} :Tabularize /}<CR>
-nmap <leader>; :Tabularize /;<CR>
-nmap <leader>\: :Tabularize /\:<CR>
+nn <leader>\" :Tabularize /"<CR>
+nn <leader>= :Tabularize /=<CR>
+nn <leader>=> :Tabularize /=<CR>
+nn <leader>{ :Tabularize /{<CR>
+nn <leader>} :Tabularize /}<CR>
+nn <leader>; :Tabularize /;<CR>
+nn <leader>\: :Tabularize /\:<CR>
 
+" Nerdtree commands
+nn <leader>nt :NERDTreeToggle<CR>
+
+" Use sane regexp
+nn / /\v
+vn / /\v
 " Format commands
+
+
+" autocomplete commands
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
+  \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
+  \ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
+" open omni completion menu closing previous if open and opening new menu without changing the text
+inoremap <expr> <C-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
+            \ '<C-x><C-o><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
+
+" open user completion menu closing previous if open and opening new menu without changing the text
+inoremap <expr> <S-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
+            \ '<C-x><C-u><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
 
 """"""""""""""""""""""""""""""
 "       Plugins config       "

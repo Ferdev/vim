@@ -1,2 +1,4 @@
-viminfo
+viminfo*
 undo/
+view/
+view/*
