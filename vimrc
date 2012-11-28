@@ -1,25 +1,16 @@
 " Changes leader key
-let mapleader                      = ","
-let tlist_objc_settings            = 'objc;i:interface;c:class;m:method;p:property'
-
-" Turn off jslint errors by default
-let g:JSLintHighlightErrorLine = 0
-
-syntax on
-call pathogen#infect()
+let mapleader = ","
 
 " Buffers events
 """""""""""""""""
-au VimEnter * wincmd l
-au BufEnter * :syntax sync fromstart
-au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru} set ft=ruby
-au BufNewFile,BufRead *.json set filetype=javascript
-au BufNewFile,BufRead *.ejs  set filetype=html
-au BufNewFile,BufRead *.tpl  set filetype=html.erb
-au BufNewFile,BufRead *.vimrc  set filetype=vim
+"au VimEnter * wincmd l
+"au BufEnter * :syntax sync fromstart
+au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru,*.sinew} set ft=ruby
+au BufNewFile,BufRead *.json                                                    set filetype=javascript
+au BufNewFile,BufRead *.ejs                                                     set filetype=html
+au BufNewFile,BufRead *.tpl                                                     set filetype=html.erb
+au BufNewFile,BufRead {*.vimrc,*.vim}                                           set filetype=vim
 au BufWritePre * :call StripTrailingWhitespaces()
-au BufWinLeave * silent! mkview
-au BufWinEnter * silent! loadview
 au insertenter * setlocal cursorline   " Highlights on cursor line in insert mode
 au insertleave * setlocal nocursorline " Highlights off cursor line in normal mode
 
@@ -34,6 +25,7 @@ augroup END
 """"""""""""""""""""""""""""""""""""""""""""
 " Settings                                 "
 """"""""""""""""""""""""""""""""""""""""""""
+syntax on                                  " Enable syntax highlight
 set nocompatible                           " Old-vim Rest In Peace
 set rnu                                    " Activates relative line numbers
 set ruler                                  " Activates ruler
@@ -60,10 +52,12 @@ set modelines=5                            " Status bar
 """"""""""""""""""""""""""""""""""""""""""""
 set backspace=indent,eol,start             " allow backspacing over everything in insert mode
 """"""""""""""""""""""""""""""""""""""""""""
-"let g:solarized_termcolors=256             " Default color scheme
-"set term=screen-256color                   " Default color scheme
+"let g:solarized_termcolors=256            " Default color scheme
+set term=screen-256color                   " Default color scheme
 set background=dark                        " Default color scheme
-colorscheme solarized                      " Default color scheme
+set t_Co=256                               " Default color scheme
+let g:molokai_original=0                   " Default color scheme
+colorscheme molokai                        " Default color scheme
 """"""""""""""""""""""""""""""""""""""""""""
 set modeline                               " Activates modeline support
 set modelines=10                           " Checks 10 first or last lines in a file for vim settings overrides
@@ -84,6 +78,9 @@ set wildignore+=*.jpeg                     " Ignored files paths
 set wildignore+=*.jpeg*                    " Ignored files paths
 set wildignore+=*.png                      " Ignored files paths
 set wildignore+=*.gif                      " Ignored files paths
+set wildignore+=.dat*                      " Ignored files paths
+set wildignore+=tags                       " Ignored files paths
+set wildignore+=*.sqlite*                  " Ignored files paths
 set wildignore+=*/public/uploads/*         " Ignored files paths
 set wildignore+=*/.git/*                   " Ignored files paths
 set wildignore+=*/.bundle/*                " Ignored files paths
@@ -93,6 +90,9 @@ set wildignore+=*/tmp/*                    " Ignored files paths
 set wildignore+=*/.sass-cache/*            " Ignored files paths
 set wildignore+=*/.jhw-cache/*             " Ignored files paths
 set wildignore+=*/node_modules/*           " Ignored files paths
+set wildignore+=*/vendor/*                 " Ignored files paths
+set wildignore+=*/resources/*              " Ignored files paths
+set wildignore+=*/build/*                  " Ignored files paths
 """"""""""""""""""""""""""""""""""""""""""""
 set nobackup                               " get rid of annoying backup behaviour
 set nowritebackup                          " get rid of annoying backup behaviour
@@ -105,6 +105,79 @@ set gdefault                               " don't need /g after :s or :g
 """"""""""""""""""""""""""""""""""""""""""""
 set completeopt=longest,menuone            " Improves autocomplete menu
 """"""""""""""""""""""""""""""""""""""""""""
+"set foldmethod=syntax                     " Folds based on syntax
+set foldnestmax=2                          " Sets max folding level
+""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" Vundle config
+filetype off
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+
+" Vundle bundles
+Bundle 'vim-scripts/SearchFold'
+Bundle 'kien/ctrlp.vim'
+Bundle 'mattn/gist-vim'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'scrooloose/nerdtree'
+Bundle 'scrooloose/syntastic'
+Bundle 'godlygeek/tabular'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'tpope/vim-endwise'
+Bundle 'tpope/vim-haml'
+Bundle 'michaeljsmith/vim-indent-object'
+Bundle 'tpope/vim-markdown'
+Bundle 'tpope/vim-rails'
+Bundle 'tpope/vim-rvm'
+Bundle 'tpope/vim-surround'
+Bundle 'mattn/zencoding-vim'
+Bundle 'nanotech/jellybeans.vim'
+Bundle 'kana/vim-textobj-user'
+Bundle 'nelstrom/vim-textobj-rubyblock'
+Bundle 'coderifous/textobj-word-column.vim'
+Bundle 'tpope/vim-vividchalk'
+Bundle 'vim-scripts/ZoomWin'
+Bundle 'vim-scripts/notes.vim'
+"Bundle 'msanders/snipmate.vim'
+Bundle 'Townk/vim-autoclose'
+Bundle 'clones/vim-cecutil'
+Bundle 'tpope/vim-ragtag'
+Bundle 'vim-ruby/vim-ruby'
+Bundle 'AndrewRadev/switch.vim'
+Bundle 'samsonw/vim-task'
+Bundle 'spolu/dwm.vim'
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'tsaleh/vim-matchit'
+Bundle 'benmills/vimux'
+Bundle 'pgr0ss/vimux-ruby-test'
+Bundle 'mileszs/ack.vim'
+Bundle 'majutsushi/tagbar'
+Bundle 'Shougo/neocomplcache'
+Bundle 'mutewinter/vim-indent-guides'
+Bundle 'xolox/vim-easytags'
+Bundle 'roman/golden-ratio'
+Bundle 'AndrewRadev/splitjoin.vim'
+Bundle 'chrisbra/NrrwRgn'
+Bundle 'swaroopch/vim-markdown-preview'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" Vundle config
+
+"""""""""""""""""""""""""""""" Plugins config
+
+so ~/.vim/config/ctrlp.vimrc
+so ~/.vim/config/vim-powerline.vimrc
+so ~/.vim/config/vim-autoclose.vimrc
+so ~/.vim/config/syntastic.vimrc
+so ~/.vim/config/vim-task.vimrc
+so ~/.vim/config/dwm.vimrc
+so ~/.vim/config/neocomplcache.vimrc
+so ~/.vim/config/vundle.vimrc
+so ~/.vim/config/nrrwrgn.vimrc
+
+"""""""""""""""""""""""""""""" Plugins config
 
 " undo stuff
 if exists("+undofile")
@@ -158,20 +231,23 @@ map <leader><leader> :ZoomWin<CR>
 
 " CTags
 map <leader>rt :!ctags --extra=+f -R *<CR><CR>
-map <leader>tt :TlistToggle<CR>
+map <leader>tt :TagbarToggle<CR>
 
 " To create new files
 map <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>n :tabnew<CR>
 map <leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>ct :tabc<CR>
+map <leader>to :tabo<CR>
 
 " Map ESC to jj and save my pinky
 imap jk <ESC>
+imap kj <ESC>
 imap Jk <ESC>
 imap JK <ESC>
 
 " Switch between buffers
-nmap <tab> <C-w><C-w>
+"nmap <tab> <C-w><C-w>
 
 " :bd deletes the current buffer (all windows of)
 nmap <leader>d :bd<CR>
@@ -180,8 +256,8 @@ nmap <leader>d :bd<CR>
 nn <leader>a :Ack
 
 " Rotating among results in an ack search
-map <C-n> :cn<CR>
-map <C-p> :cp<CR>
+map an :cn<CR>
+map ap :cp<CR>
 
 " ease of use keyboard mappings (why do I care about top/bottom of screen?)
 map H ^
@@ -215,13 +291,17 @@ nn <leader>v <C-w>v<C-w>l
 nn <leader>h <C-w>s<C-w>l
 
 " Move between splits
-nn <C-h> <C-w>h
-nn <C-j> <C-w>j
-nn <C-k> <C-w>k
-nn <C-l> <C-w>l
+"nn <C-h> <C-w>h
+"nn <C-j> <C-w>j
+"nn <C-k> <C-w>k
+"nn <C-l> <C-w>l
+nnoremap <C-J> <C-W>w
+nnoremap <C-K> <C-W>W
+
 
 " Removes highlighted search terms
-nn <CR> :noh<CR>
+" <C-M> == <CR>
+noremap <CR> :noh<CR>
 
 " Numbers to move between tabs
 map  <leader>0 0gt
@@ -254,6 +334,12 @@ map <leader>rx :CloseVimTmuxPanes<CR>
 " Opens vimrc file in a new tab
 nmap <leader>vrc :tabedit $MYVIMRC<CR>
 
+" Opens /etc/hosts file
+nmap <leader>etc :tabedit /etc/hosts<CR>
+
+" Saves as super-user
+nmap <leader>sw :w !sudo tee %<CR>
+
 " Gundo toggle
 nmap <leader>u :GundoToggle<CR>
 
@@ -274,28 +360,16 @@ nn / /\v
 vn / /\v
 " Format commands
 
+nnoremap - :Switch<cr>
 
-" autocomplete commands
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
-  \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
-  \ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+" Moving between diffs
+nn <leader>nd ]c
+nn <leader>pd [c
 
-" open omni completion menu closing previous if open and opening new menu without changing the text
-inoremap <expr> <C-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
-            \ '<C-x><C-o><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
-
-" open user completion menu closing previous if open and opening new menu without changing the text
-inoremap <expr> <S-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
-            \ '<C-x><C-u><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
-
-""""""""""""""""""""""""""""""
-"       Plugins config       "
-"                            "
-""""""""""""""""""""""""""""""
-so ~/.vim/config/ctrlp.vimrc
-so ~/.vim/config/vim-powerline.vimrc
-so ~/.vim/config/vim-autoclose.vimrc
-so ~/.vim/config/syntastic.vimrc
+" Code shortcuts
+nn db orequire 'debugger'; debugger<Esc>
+nn tabu :Tabularize /
+nn <tab><tab> :Tabularize /
+nn // :%s//
+nn == :Tabularize /=<CR>
 
