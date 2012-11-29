@@ -1,6 +1,7 @@
 .netrwhist
 viminfo*
 undo/
+undo/*
 view/
 view/*
 sessions/*
