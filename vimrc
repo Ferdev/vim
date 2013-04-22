@@ -10,7 +10,13 @@ au BufNewFile,BufRead *.json                                                    
 au BufNewFile,BufRead *.ejs                                                     set filetype=html
 au BufNewFile,BufRead *.tpl                                                     set filetype=html.erb
 au BufNewFile,BufRead {*.vimrc,*.vim}                                           set filetype=vim
-au BufWritePre * :call StripTrailingWhitespaces()
+au BufWinLeave * silent! mkview    " Auto-saves foldings
+au BufWinEnter * silent! loadview  " Auto-load foldings
+
+if !exists('g:trim_trailing_space') || g:trim_trailing_space != 'no'
+  au BufWritePre * :call StripTrailingWhitespaces()
+endif
+
 au insertenter * setlocal cursorline   " Highlights on cursor line in insert mode
 au insertleave * setlocal nocursorline " Highlights off cursor line in normal mode
 
@@ -22,6 +28,7 @@ augroup AutoReloadVimRC
   au BufWritePost $MYVIMRC so $MYVIMRC
 augroup END
 
+let g:ackprg = 'ag --nogroup --nocolor --column'
 """"""""""""""""""""""""""""""""""""""""""""
 " Settings                                 "
 """"""""""""""""""""""""""""""""""""""""""""
@@ -51,13 +58,6 @@ set laststatus=2                           " Status bar
 set modelines=5                            " Status bar
 """"""""""""""""""""""""""""""""""""""""""""
 set backspace=indent,eol,start             " allow backspacing over everything in insert mode
-""""""""""""""""""""""""""""""""""""""""""""
-"let g:solarized_termcolors=256            " Default color scheme
-set term=screen-256color                   " Default color scheme
-set background=dark                        " Default color scheme
-set t_Co=256                               " Default color scheme
-let g:molokai_original=0                   " Default color scheme
-colorscheme molokai                        " Default color scheme
 """"""""""""""""""""""""""""""""""""""""""""
 set modeline                               " Activates modeline support
 set modelines=10                           " Checks 10 first or last lines in a file for vim settings overrides
@@ -93,6 +93,7 @@ set wildignore+=*/node_modules/*           " Ignored files paths
 set wildignore+=*/vendor/*                 " Ignored files paths
 set wildignore+=*/resources/*              " Ignored files paths
 set wildignore+=*/build/*                  " Ignored files paths
+set wildignore+=*/_site/*                  " Ignored files paths
 """"""""""""""""""""""""""""""""""""""""""""
 set nobackup                               " get rid of annoying backup behaviour
 set nowritebackup                          " get rid of annoying backup behaviour
@@ -118,6 +119,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " Vundle bundles
+Bundle 'altercation/vim-colors-solarized'
 Bundle 'vim-scripts/SearchFold'
 Bundle 'kien/ctrlp.vim'
 Bundle 'mattn/gist-vim'
@@ -141,7 +143,7 @@ Bundle 'coderifous/textobj-word-column.vim'
 Bundle 'tpope/vim-vividchalk'
 Bundle 'vim-scripts/ZoomWin'
 Bundle 'vim-scripts/notes.vim'
-"Bundle 'msanders/snipmate.vim'
+Bundle 'msanders/snipmate.vim'
 Bundle 'Townk/vim-autoclose'
 Bundle 'clones/vim-cecutil'
 Bundle 'tpope/vim-ragtag'
@@ -155,27 +157,40 @@ Bundle 'benmills/vimux'
 Bundle 'pgr0ss/vimux-ruby-test'
 Bundle 'mileszs/ack.vim'
 Bundle 'majutsushi/tagbar'
-Bundle 'Shougo/neocomplcache'
 Bundle 'mutewinter/vim-indent-guides'
 Bundle 'xolox/vim-easytags'
 Bundle 'roman/golden-ratio'
 Bundle 'AndrewRadev/splitjoin.vim'
 Bundle 'chrisbra/NrrwRgn'
 Bundle 'swaroopch/vim-markdown-preview'
+Bundle 'sjl/gundo.vim'
+Bundle 'ervandew/supertab'
+Bundle 'danro/rename.vim'
+Bundle 'mikewest/vimroom'
+Bundle 'SirVer/ultisnips'
+Bundle 'xolox/vim-session'
+Bundle 'rnaveiras/vim-git-session'
+Bundle 'airblade/vim-gitgutter'
+Bundle 'ap/vim-css-color'
+Bundle 'sjl/vitality.vim'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""" Vundle config
 
 """""""""""""""""""""""""""""" Plugins config
 
+so ~/.vim/config/colors.vimrc
 so ~/.vim/config/ctrlp.vimrc
 so ~/.vim/config/vim-powerline.vimrc
 so ~/.vim/config/vim-autoclose.vimrc
 so ~/.vim/config/syntastic.vimrc
 so ~/.vim/config/vim-task.vimrc
 so ~/.vim/config/dwm.vimrc
-so ~/.vim/config/neocomplcache.vimrc
 so ~/.vim/config/vundle.vimrc
 so ~/.vim/config/nrrwrgn.vimrc
+so ~/.vim/config/vim-markdown-preview.vimrc
+so ~/.vim/config/vim-session.vimrc
+so ~/.vim/config/vim-easytags.vimrc
+so ~/.vim/config/switch.vim.vimrc
 
 """""""""""""""""""""""""""""" Plugins config
 
@@ -226,12 +241,16 @@ runtime! macros/matchit.vim
 """"""""""""""""""""""""""""""""
 "           Mappings           "
 """"""""""""""""""""""""""""""""
+vnoremap p "_dP
+
 " ZoomWin configuration
 map <leader><leader> :ZoomWin<CR>
 
 " CTags
 map <leader>rt :!ctags --extra=+f -R *<CR><CR>
 map <leader>tt :TagbarToggle<CR>
+map <leader>gd <C-]>
+
 
 " To create new files
 map <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
@@ -242,15 +261,15 @@ map <leader>to :tabo<CR>
 
 " Map ESC to jj and save my pinky
 imap jk <ESC>
-imap kj <ESC>
 imap Jk <ESC>
 imap JK <ESC>
 
 " Switch between buffers
 "nmap <tab> <C-w><C-w>
 
+
 " :bd deletes the current buffer (all windows of)
-nmap <leader>d :bd<CR>
+"nmap <leader>d :bd<CR>
 
 " ,a to Ack
 nn <leader>a :Ack
@@ -320,16 +339,20 @@ map <leader>jf  <Esc>:%!python -m json.tool<CR>
 
 " Activates VimRoom-mode
 nn <silent> <leader>vr :VimroomToggle<CR>
+nn 80c :set textwidth=80<CR>
 
 " Folds all foldings but the current you are in
 no <leader>z zMzvzz
+no aa za
+no CC zM
+no AA zR
 
 " Ruby test Vimux config
-map <leader>tf :RunRubyFocusedTest<CR>
-map <leader>tc :RunRubyFocusedContext<CR>
-map <leader>ta :RunAllRubyTests<CR>
-map <leader>tl :RunLastVimTmuxCommand<CR>
-map <leader>rx :CloseVimTmuxPanes<CR>
+map tf :RunRubyFocusedTest<CR>
+map tc :RunRubyFocusedContext<CR>
+map ta :RunAllRubyTests<CR>
+map tl :RunLastVimTmuxCommand<CR>
+map th :CloseVimTmuxPanes<CR>
 
 " Opens vimrc file in a new tab
 nmap <leader>vrc :tabedit $MYVIMRC<CR>
@@ -345,11 +368,11 @@ nmap <leader>u :GundoToggle<CR>
 
 " Alignment commands
 nn <leader>\" :Tabularize /"<CR>
-nn <leader>= :Tabularize /=<CR>
+nn <leader>=  :Tabularize /=<CR>
 nn <leader>=> :Tabularize /=<CR>
-nn <leader>{ :Tabularize /{<CR>
-nn <leader>} :Tabularize /}<CR>
-nn <leader>; :Tabularize /;<CR>
+nn <leader>{  :Tabularize /{<CR>
+nn <leader>}  :Tabularize /}<CR>
+nn <leader>;  :Tabularize /;<CR>
 nn <leader>\: :Tabularize /\:<CR>
 
 " Nerdtree commands
@@ -368,8 +391,21 @@ nn <leader>pd [c
 
 " Code shortcuts
 nn db orequire 'debugger'; debugger<Esc>
+nn rb orequire 'ruby-debug'; debugger<Esc>
 nn tabu :Tabularize /
 nn <tab><tab> :Tabularize /
+vn <tab><tab> :Tabularize /
 nn // :%s//
 nn == :Tabularize /=<CR>
+vn == :Tabularize /=<CR>
+nn {{ :Tabularize /{<CR>
+vn {{ :Tabularize /{<CR>
+nn }} :Tabularize /}<CR>
+vn }} :Tabularize /}<CR>
 
+nn <C-f> <Nop>
+
+""""""""""""""""""""""""""""""""
+"           Macros             "
+""""""""""""""""""""""""""""""""
+let @r='/def V%zf'
