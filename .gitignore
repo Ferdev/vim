@@ -5,3 +5,5 @@ undo/*
 view/
 view/*
 sessions/*
+bundle/*
+*.tmp
