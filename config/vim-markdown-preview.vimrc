@@ -1,1 +1,1 @@
-map md :MarkdownPreview<CR>
+map md :Mm<CR>
